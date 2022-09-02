@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package moviestore;
+
+// The movie store service definition.
+service Moviestore {
+  // Retrieve a movie
+  rpc GetMovie(GetMovieRequest) returns (GetMovieResponse) {}
+}
+
+// The request with a id of the movie
+message GetMovieRequest {
+  string id = 1;
+}
+
+// The response details of a movie
+message GetMovieResponse {
+  string id = 1;
+  string title = 2;
+  string director = 3;
+  int32 year = 4;
+}
+
