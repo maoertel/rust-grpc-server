@@ -6,7 +6,7 @@ fn main() {
 
   tonic_build::configure()
     .build_server(true)
-    .file_descriptor_set_path(out_dir.join("greeter_descriptor.bin")) // Add this
+    .file_descriptor_set_path(out_dir.join("movie_descriptor.bin")) // Add this
     .out_dir("./src")
     .compile(&[proto_file], &["."])
     .unwrap_or_else(|error| panic!("protobuf compile error: {error}"));

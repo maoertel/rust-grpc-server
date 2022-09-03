@@ -1,9 +1,8 @@
+use crate::moviestore::{moviestore_server::Moviestore, GetMovieRequest, GetMovieResponse};
 use tonic::{Request, Response, Status};
 
-use crate::moviestore::{moviestore_server::Moviestore, GetMovieRequest, GetMovieResponse};
-
 #[derive(Default)]
-pub struct MovieStoreImpl {}
+pub struct MovieStoreImpl;
 
 #[tonic::async_trait]
 impl Moviestore for MovieStoreImpl {
@@ -12,8 +11,8 @@ impl Moviestore for MovieStoreImpl {
 
     let response = GetMovieResponse {
       id: request.into_inner().id,
-      director: "Peter Jackson".to_owned(),
-      title: "Lord of the Rings".to_owned(),
+      director: "Peter Jackson".to_string(),
+      title: "Lord of the Rings".to_string(),
       year: 2000,
     };
     Ok(Response::new(response))
