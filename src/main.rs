@@ -9,33 +9,15 @@ mod moviestore {
 
 use crate::movie::MovieStoreImpl;
 use error::Error;
-use moviestore::moviestore_server::MoviestoreServer;
-use tonic::transport::Server;
-use tonic_reflection::server::{ServerReflection, ServerReflectionServer};
+use moviestore::moviestore_server::{Moviestore, MoviestoreServer};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
   let address = "[::1]:50051".parse()?;
-  let moviestore: MovieStoreImpl = MovieStoreImpl::default();
-
+  let movie_store_service = MoviestoreServer::new(MovieStoreImpl::default());
   let reflection_service = tonic_reflection::server::Builder::configure()
     .register_encoded_file_descriptor_set(moviestore::FILE_DESCRIPTOR_SET)
     .build()?;
 
-  start(address, moviestore, reflection_service).await
-}
-
-async fn start(
-  address: std::net::SocketAddr,
-  movie_store: MovieStoreImpl,
-  reflection_service: ServerReflectionServer<impl ServerReflection>,
-) -> Result<(), Error> {
-  println!("Start server listening on {address}");
-  Ok(
-    Server::builder()
-      .add_service(MoviestoreServer::new(movie_store))
-      .add_service(reflection_service)
-      .serve(address)
-      .await?,
-  )
+  server::start(address, movie_store_service, reflection_service).await
 }
